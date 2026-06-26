@@ -1,4 +1,4 @@
-import { Plugin, WorkspaceLeaf } from 'obsidian';
+import { Plugin, WorkspaceLeaf, TFile, MarkdownView } from 'obsidian';
 import { MoodCodeSettings, DEFAULT_SETTINGS } from './settings';
 import { MoodCodeSettingTab } from './settings';
 import { MainView, VIEW_TYPE_MAIN } from './ui/main-view';
@@ -9,6 +9,7 @@ import { ThemeEditorModal } from './ui/theme-editor';
 export default class MoodCodePlugin extends Plugin {
   settings!: MoodCodeSettings;
   themeRegistry!: ThemeRegistry;
+  lastActiveMarkdownFile: TFile | null = null;
 
   async onload() {
     await this.loadSettings();
@@ -71,7 +72,7 @@ export default class MoodCodePlugin extends Plugin {
         const coverLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_COVER)[0];
         const coverView = coverLeaf?.view as CoverView | null;
 
-        await pushToWechatDraft(this.app, this.settings, this.themeRegistry, coverView);
+        await pushToWechatDraft(this.app, this.settings, this.themeRegistry, coverView, this.lastActiveMarkdownFile);
       },
     });
 
@@ -86,6 +87,15 @@ export default class MoodCodePlugin extends Plugin {
 
     // Settings tab
     this.addSettingTab(new MoodCodeSettingTab(this.app, this));
+
+    // Track last active markdown file for when our panel gets focus
+    this.registerEvent(
+      this.app.workspace.on('active-leaf-change', (leaf) => {
+        if (leaf?.view instanceof MarkdownView && leaf.view.file) {
+          this.lastActiveMarkdownFile = leaf.view.file;
+        }
+      })
+    );
 
     console.log('MoodCode Blog Publisher loaded');
   }

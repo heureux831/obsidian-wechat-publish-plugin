@@ -8,26 +8,42 @@ export interface NoteFrontmatter {
   'wechat-app-id'?: string;
 }
 
-export function getActiveNoteFile(app: App): TFile | null {
+/**
+ * Get the best available file: active file first, fallback to provided file.
+ * Does NOT show a Notice — callers decide whether to warn the user.
+ */
+export function getBestFile(app: App, fallback?: TFile | null): TFile | null {
   const activeFile = app.workspace.getActiveFile();
-  if (!activeFile) {
-    new Notice('No active note. Please open a note first.');
+  if (activeFile) return activeFile;
+  return fallback ?? null;
+}
+
+export function getActiveNoteFile(app: App, fallback?: TFile | null): TFile | null {
+  const file = getBestFile(app, fallback);
+  if (!file) {
+    new Notice('No note is open. Please open a note first.');
     return null;
   }
-  return activeFile;
+  return file;
 }
 
-export function getActiveNoteContent(app: App): string {
+export async function getActiveNoteContent(app: App, fallback?: TFile | null): Promise<string> {
   const editor = app.workspace.activeEditor?.editor;
-  if (!editor) {
-    new Notice('No active editor. Please open a note.');
-    return '';
+  if (editor) return editor.getValue();
+
+  // Fallback: read from the last known file on disk
+  const file = getBestFile(app, fallback);
+  if (file) {
+    const content = await app.vault.read(file);
+    return content;
   }
-  return editor.getValue();
+
+  new Notice('No active editor. Please open a note.');
+  return '';
 }
 
-export function getNoteFrontmatter(app: App): NoteFrontmatter {
-  const file = getActiveNoteFile(app);
+export function getNoteFrontmatter(app: App, fallback?: TFile | null): NoteFrontmatter {
+  const file = getBestFile(app, fallback);
   if (!file) return {};
 
   const cache = app.metadataCache.getFileCache(file);
@@ -43,25 +59,24 @@ export function getNoteFrontmatter(app: App): NoteFrontmatter {
   };
 }
 
-export function getNoteTitle(app: App): string {
-  const fm = getNoteFrontmatter(app);
+export function getNoteTitle(app: App, fallback?: TFile | null): string {
+  const fm = getNoteFrontmatter(app, fallback);
   if (fm.title) return fm.title;
 
-  const file = getActiveNoteFile(app);
+  const file = getBestFile(app, fallback);
   if (file) {
-    // Use filename without extension
     return file.basename;
   }
   return 'Untitled';
 }
 
-export function getNoteSubtitle(app: App): string {
-  const fm = getNoteFrontmatter(app);
+export function getNoteSubtitle(app: App, fallback?: TFile | null): string {
+  const fm = getNoteFrontmatter(app, fallback);
   return fm.subtitle ?? '';
 }
 
-export function getCoverAttachmentPath(app: App, noteTitle: string): string {
-  const file = getActiveNoteFile(app);
+export function getCoverAttachmentPath(app: App, noteTitle: string, fallback?: TFile | null): string {
+  const file = getBestFile(app, fallback);
   if (!file) return '';
 
   // Save cover next to the note: note-name-cover.png

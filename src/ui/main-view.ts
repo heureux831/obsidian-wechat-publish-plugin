@@ -102,7 +102,7 @@ export class MainView extends ItemView {
   async refreshPreview(): Promise<void> {
     if (!this.previewIframe) return;
 
-    const content = getActiveNoteContent(this.app);
+    const content = await getActiveNoteContent(this.app, this.plugin.lastActiveMarkdownFile);
     const themeCSS = this.plugin.themeRegistry.getThemeCSS(this.selectedThemeId);
 
     if (!content) {
@@ -120,7 +120,7 @@ export class MainView extends ItemView {
   }
 
   async copyHTML(): Promise<void> {
-    const content = getActiveNoteContent(this.app);
+    const content = await getActiveNoteContent(this.app, this.plugin.lastActiveMarkdownFile);
     const themeCSS = this.plugin.themeRegistry.getThemeCSS(this.selectedThemeId);
 
     if (!content) {
@@ -150,6 +150,7 @@ export class MainView extends ItemView {
       this.plugin.settings,
       this.plugin.themeRegistry,
       coverView,
+      this.plugin.lastActiveMarkdownFile,
     );
   }
 

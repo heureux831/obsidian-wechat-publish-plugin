@@ -35,14 +35,14 @@ export class CoverView extends ItemView {
     const titleRow = controls.createDiv('moodcode-control-row');
     titleRow.createEl('label', { text: '标题' });
     this.titleInput = titleRow.createEl('input', { type: 'text' });
-    this.titleInput.value = getNoteTitle(this.app);
+    this.titleInput.value = getNoteTitle(this.app, this.plugin.lastActiveMarkdownFile);
     this.titleInput.addEventListener('input', () => this.refreshCanvas());
 
     // Subtitle input
     const subRow = controls.createDiv('moodcode-control-row');
     subRow.createEl('label', { text: '副标题' });
     this.subtitleInput = subRow.createEl('input', { type: 'text' });
-    this.subtitleInput.value = getNoteSubtitle(this.app);
+    this.subtitleInput.value = getNoteSubtitle(this.app, this.plugin.lastActiveMarkdownFile);
     this.subtitleInput.addEventListener('input', () => this.refreshCanvas());
 
     // Scheme picker
@@ -76,8 +76,8 @@ export class CoverView extends ItemView {
     // Listen for note changes
     this.registerEvent(
       this.app.workspace.on('active-leaf-change', () => {
-        if (this.titleInput) this.titleInput.value = getNoteTitle(this.app);
-        if (this.subtitleInput) this.subtitleInput.value = getNoteSubtitle(this.app);
+        if (this.titleInput) this.titleInput.value = getNoteTitle(this.app, this.plugin.lastActiveMarkdownFile);
+        if (this.subtitleInput) this.subtitleInput.value = getNoteSubtitle(this.app, this.plugin.lastActiveMarkdownFile);
         this.refreshCanvas();
       })
     );
@@ -101,7 +101,7 @@ export class CoverView extends ItemView {
     const subtitle = this.subtitleInput?.value || '';
     const { blob } = generateCover(scheme, title, subtitle);
 
-    const path = getCoverAttachmentPath(this.app, title);
+    const path = getCoverAttachmentPath(this.app, title, this.plugin.lastActiveMarkdownFile);
     if (!path) {
       new Notice('❌ 请先打开一篇笔记');
       return;

@@ -1,4 +1,4 @@
-import { App, Notice } from 'obsidian';
+import { App, Notice, TFile } from 'obsidian';
 import { MoodCodeSettings } from '../settings';
 import { ThemeRegistry } from '../theme/theme-registry';
 import { renderWechatHTML } from '../theme/theme-engine';
@@ -12,6 +12,7 @@ export async function pushToWechatDraft(
   settings: MoodCodeSettings,
   themeRegistry: ThemeRegistry,
   coverView: CoverView | null,
+  lastActiveFile: TFile | null = null,
 ): Promise<void> {
   // === 1. Pre-checks ===
 
@@ -20,13 +21,13 @@ export async function pushToWechatDraft(
     return;
   }
 
-  const content = getActiveNoteContent(app);
+  const content = await getActiveNoteContent(app, lastActiveFile);
   if (!content.trim()) {
     new Notice('❌ 当前笔记内容为空', 6000);
     return;
   }
 
-  const title = getNoteTitle(app);
+  const title = getNoteTitle(app, lastActiveFile);
   if (!title || title === 'Untitled') {
     new Notice('❌ 请设置文章标题', 6000);
     return;
