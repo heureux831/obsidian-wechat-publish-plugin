@@ -2,6 +2,7 @@ import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { MoodCodeSettings, DEFAULT_SETTINGS } from './settings';
 import { MoodCodeSettingTab } from './settings';
 import { MainView, VIEW_TYPE_MAIN } from './ui/main-view';
+import { CoverView, VIEW_TYPE_COVER } from './cover/cover-view';
 import { ThemeRegistry } from './theme/theme-registry';
 
 export default class MoodCodePlugin extends Plugin {
@@ -18,6 +19,12 @@ export default class MoodCodePlugin extends Plugin {
       (leaf: WorkspaceLeaf) => new MainView(leaf, this)
     );
 
+    // Register cover view
+    this.registerView(
+      VIEW_TYPE_COVER,
+      (leaf: WorkspaceLeaf) => new CoverView(leaf, this)
+    );
+
     // Ribbon icon
     this.addRibbonIcon('send', 'MoodCode Publisher', () => {
       this.activateView();
@@ -28,6 +35,23 @@ export default class MoodCodePlugin extends Plugin {
       id: 'open-moodcode-panel',
       name: 'Open Publisher Panel',
       callback: () => this.activateView(),
+    });
+
+    // Command: open cover generator
+    this.addCommand({
+      id: 'open-moodcode-cover',
+      name: 'Open Cover Generator',
+      callback: () => {
+        const { workspace } = this.app;
+        let leaf = workspace.getLeavesOfType(VIEW_TYPE_COVER)[0];
+        if (!leaf) {
+          leaf = workspace.getRightLeaf(false);
+          if (leaf) {
+            leaf.setViewState({ type: VIEW_TYPE_COVER, active: true });
+          }
+        }
+        if (leaf) workspace.revealLeaf(leaf);
+      },
     });
 
     // Settings tab
