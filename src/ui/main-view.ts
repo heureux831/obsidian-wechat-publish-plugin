@@ -2,6 +2,7 @@ import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
 import type MoodCodePlugin from '../main';
 import { renderPreviewHTML, renderWechatHTML } from '../theme/theme-engine';
 import { getActiveNoteContent } from '../utils/file-utils';
+import type { CoverView } from '../cover/cover-view';
 
 export const VIEW_TYPE_MAIN = 'moodcode-main-view';
 
@@ -57,6 +58,13 @@ export class MainView extends ItemView {
 
     const copyBtn = btnRow.createEl('button', { text: 'Copy HTML' });
     copyBtn.addEventListener('click', () => this.copyHTML());
+
+    // Push button
+    const pushBtn = container.createEl('button', {
+      text: '🚀 推送到微信草稿箱',
+      cls: 'moodcode-push-btn',
+    });
+    pushBtn.addEventListener('click', () => this.handlePush());
 
     // Preview iframe
     this.previewIframe = container.createEl('iframe', 'moodcode-preview-iframe');
@@ -123,6 +131,21 @@ export class MainView extends ItemView {
       new Notice(`Copy failed: ${err}`);
       console.error('Copy HTML error:', err);
     }
+  }
+
+  private async handlePush(): Promise<void> {
+    const { pushToWechatDraft } = await import('../wechat/push-handler');
+
+    // Find cover view
+    const coverLeaf = this.app.workspace.getLeavesOfType('moodcode-cover-view')[0];
+    const coverView = coverLeaf?.view as CoverView | null;
+
+    await pushToWechatDraft(
+      this.app,
+      this.plugin.settings,
+      this.plugin.themeRegistry,
+      coverView,
+    );
   }
 
   async onClose() {

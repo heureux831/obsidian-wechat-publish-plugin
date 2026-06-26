@@ -54,6 +54,20 @@ export default class MoodCodePlugin extends Plugin {
       },
     });
 
+    // Command: push to WeChat draft
+    this.addCommand({
+      id: 'push-to-wechat-draft',
+      name: 'Push to WeChat Draft',
+      callback: async () => {
+        const { pushToWechatDraft } = await import('./wechat/push-handler');
+
+        const coverLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_COVER)[0];
+        const coverView = coverLeaf?.view as CoverView | null;
+
+        await pushToWechatDraft(this.app, this.settings, this.themeRegistry, coverView);
+      },
+    });
+
     // Settings tab
     this.addSettingTab(new MoodCodeSettingTab(this.app, this));
 
