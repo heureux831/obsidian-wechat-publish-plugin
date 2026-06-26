@@ -19,10 +19,18 @@ export function renderCoverToCanvas(
 
   // Layer 1: Background
   if (scheme.gradient) {
+    const rad = (scheme.gradient.angle * Math.PI) / 180;
+    const dirX = Math.cos(rad);
+    const dirY = Math.sin(rad);
+    const diag = Math.sqrt(CANVAS_WIDTH * CANVAS_WIDTH + CANVAS_HEIGHT * CANVAS_HEIGHT);
+    const half = diag / 2;
+    const cx = CANVAS_WIDTH / 2;
+    const cy = CANVAS_HEIGHT / 2;
     const grad = ctx.createLinearGradient(
-      0, 0,
-      CANVAS_WIDTH * Math.cos(scheme.gradient.angle * Math.PI / 180),
-      CANVAS_HEIGHT * Math.sin(scheme.gradient.angle * Math.PI / 180),
+      cx - dirX * half,
+      cy - dirY * half,
+      cx + dirX * half,
+      cy + dirY * half,
     );
     grad.addColorStop(0, scheme.gradient.start);
     grad.addColorStop(1, scheme.gradient.end);
@@ -46,7 +54,13 @@ export function renderCoverToCanvas(
       case 'rect': {
         const w = ((deco.width ?? 10) / 100) * CANVAS_WIDTH;
         const h = ((deco.height ?? 4) / 100) * CANVAS_HEIGHT;
-        ctx.fillRect(x, y, w, h);
+        if (deco.rotation) {
+          ctx.translate(x + w / 2, y + h / 2);
+          ctx.rotate((deco.rotation * Math.PI) / 180);
+          ctx.fillRect(-w / 2, -h / 2, w, h);
+        } else {
+          ctx.fillRect(x, y, w, h);
+        }
         break;
       }
       case 'circle': {
@@ -59,10 +73,19 @@ export function renderCoverToCanvas(
       case 'line': {
         const w = ((deco.width ?? 20) / 100) * CANVAS_WIDTH;
         ctx.lineWidth = deco.height ?? 2;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + w, y);
-        ctx.stroke();
+        if (deco.rotation) {
+          ctx.translate(x, y);
+          ctx.rotate((deco.rotation * Math.PI) / 180);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(w, 0);
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + w, y);
+          ctx.stroke();
+        }
         break;
       }
       case 'gradient-overlay': {
@@ -109,14 +132,13 @@ function wrapText(
   const words = text.split('');
   let line = '';
   let currentY = y;
-  const align = ctx.textAlign;
 
   for (let i = 0; i < words.length; i++) {
     const testLine = line + words[i];
     const metrics = ctx.measureText(testLine);
 
     if (metrics.width > maxWidth && line.length > 0) {
-      const drawX = align === 'center' ? x : x;
+      const drawX = x;
       ctx.fillText(line.trim(), drawX, currentY);
       line = words[i];
       currentY += lineHeight;
@@ -124,7 +146,7 @@ function wrapText(
       line = testLine;
     }
   }
-  const drawX = align === 'center' ? x : x;
+  const drawX = x;
   ctx.fillText(line.trim(), drawX, currentY);
 }
 
