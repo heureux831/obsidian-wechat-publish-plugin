@@ -5,13 +5,13 @@ import { renderWechatHTML } from '../theme/theme-engine';
 import { getActiveNoteContent, getNoteTitle } from '../utils/file-utils';
 import { WechatTokenManager } from './token-manager';
 import { uploadCoverImage, createDraft } from './api';
-import type { CoverView } from '../cover/cover-view';
+import type { MainView } from '../ui/main-view';
 
 export async function pushToWechatDraft(
   app: App,
   settings: MoodCodeSettings,
   themeRegistry: ThemeRegistry,
-  coverView: CoverView | null,
+  mainView: MainView | null,
   lastActiveFile: TFile | null = null,
 ): Promise<void> {
   // === 1. Pre-checks ===
@@ -36,8 +36,8 @@ export async function pushToWechatDraft(
   // === 2. Get cover dataURL ===
 
   let coverDataURL: string;
-  if (coverView) {
-    coverDataURL = coverView.getCoverDataURL();
+  if (mainView) {
+    coverDataURL = mainView.getCoverDataURL();
   } else {
     new Notice('⚠️ 请先在封面面板生成封面图', 6000);
     return;

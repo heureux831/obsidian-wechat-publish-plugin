@@ -2,7 +2,6 @@ import { Plugin, WorkspaceLeaf, TFile, MarkdownView } from 'obsidian';
 import { MoodCodeSettings, DEFAULT_SETTINGS } from './settings';
 import { MoodCodeSettingTab } from './settings';
 import { MainView, VIEW_TYPE_MAIN } from './ui/main-view';
-import { CoverView, VIEW_TYPE_COVER } from './cover/cover-view';
 import { ThemeRegistry } from './theme/theme-registry';
 import { ThemeEditorModal } from './ui/theme-editor';
 
@@ -21,16 +20,10 @@ export default class MoodCodePlugin extends Plugin {
       this.themeRegistry.saveCustomTheme(data.customCSS);
     }
 
-    // Register main view
+    // Register the unified main view
     this.registerView(
       VIEW_TYPE_MAIN,
       (leaf: WorkspaceLeaf) => new MainView(leaf, this)
-    );
-
-    // Register cover view
-    this.registerView(
-      VIEW_TYPE_COVER,
-      (leaf: WorkspaceLeaf) => new CoverView(leaf, this)
     );
 
     // Ribbon icon
@@ -45,34 +38,15 @@ export default class MoodCodePlugin extends Plugin {
       callback: () => this.activateView(),
     });
 
-    // Command: open cover generator
-    this.addCommand({
-      id: 'open-moodcode-cover',
-      name: 'Open Cover Generator',
-      callback: () => {
-        const { workspace } = this.app;
-        let leaf: WorkspaceLeaf | null = workspace.getLeavesOfType(VIEW_TYPE_COVER)[0] ?? null;
-        if (!leaf) {
-          leaf = workspace.getRightLeaf(false);
-          if (leaf) {
-            leaf.setViewState({ type: VIEW_TYPE_COVER, active: true });
-          }
-        }
-        if (leaf) workspace.revealLeaf(leaf);
-      },
-    });
-
     // Command: push to WeChat draft
     this.addCommand({
       id: 'push-to-wechat-draft',
       name: 'Push to WeChat Draft',
       callback: async () => {
         const { pushToWechatDraft } = await import('./wechat/push-handler');
-
-        const coverLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_COVER)[0];
-        const coverView = coverLeaf?.view as CoverView | null;
-
-        await pushToWechatDraft(this.app, this.settings, this.themeRegistry, coverView, this.lastActiveMarkdownFile);
+        const mainLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_MAIN)[0];
+        const mainView = mainLeaf?.view as MainView | null;
+        await pushToWechatDraft(this.app, this.settings, this.themeRegistry, mainView, this.lastActiveMarkdownFile);
       },
     });
 

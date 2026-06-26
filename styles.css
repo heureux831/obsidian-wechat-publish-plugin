@@ -91,3 +91,42 @@
   border-color: #07c160;
   background: #e6f9ed;
 }
+
+/* Tab bar */
+.moodcode-tab-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--background-modifier-border);
+}
+
+.moodcode-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.moodcode-tab:hover {
+  color: var(--text-normal);
+}
+
+.moodcode-tab.active {
+  color: #07c160;
+  border-bottom-color: #07c160;
+}
+
+.moodcode-tab-panel {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.moodcode-tab-panel.active {
+  display: block;
+}
