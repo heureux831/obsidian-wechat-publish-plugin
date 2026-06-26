@@ -94,6 +94,11 @@ export class MainView extends ItemView {
     }
   }
 
+  /** Refresh the theme dropdown — called externally when the custom theme is saved */
+  public refreshThemeList(): void {
+    this.populateThemeList();
+  }
+
   async refreshPreview(): Promise<void> {
     if (!this.previewIframe) return;
 

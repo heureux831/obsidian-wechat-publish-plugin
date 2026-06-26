@@ -4,6 +4,7 @@ import { MoodCodeSettingTab } from './settings';
 import { MainView, VIEW_TYPE_MAIN } from './ui/main-view';
 import { CoverView, VIEW_TYPE_COVER } from './cover/cover-view';
 import { ThemeRegistry } from './theme/theme-registry';
+import { ThemeEditorModal } from './ui/theme-editor';
 
 export default class MoodCodePlugin extends Plugin {
   settings!: MoodCodeSettings;
@@ -12,6 +13,12 @@ export default class MoodCodePlugin extends Plugin {
   async onload() {
     await this.loadSettings();
     this.themeRegistry = new ThemeRegistry();
+
+    // Restore persisted custom CSS into the in-memory theme registry
+    const data: Record<string, unknown> | null = await this.loadData();
+    if (data?.customCSS && typeof data.customCSS === 'string') {
+      this.themeRegistry.saveCustomTheme(data.customCSS);
+    }
 
     // Register main view
     this.registerView(
@@ -65,6 +72,15 @@ export default class MoodCodePlugin extends Plugin {
         const coverView = coverLeaf?.view as CoverView | null;
 
         await pushToWechatDraft(this.app, this.settings, this.themeRegistry, coverView);
+      },
+    });
+
+    // Command: open custom theme editor
+    this.addCommand({
+      id: 'open-theme-editor',
+      name: 'Open Custom Theme Editor',
+      callback: () => {
+        new ThemeEditorModal(this.app, this).open();
       },
     });
 
