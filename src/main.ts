@@ -50,7 +50,7 @@ export default class MoodCodePlugin extends Plugin {
       name: 'Open Cover Generator',
       callback: () => {
         const { workspace } = this.app;
-        let leaf = workspace.getLeavesOfType(VIEW_TYPE_COVER)[0];
+        let leaf: WorkspaceLeaf | null = workspace.getLeavesOfType(VIEW_TYPE_COVER)[0] ?? null;
         if (!leaf) {
           leaf = workspace.getRightLeaf(false);
           if (leaf) {

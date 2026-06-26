@@ -25,9 +25,10 @@ export class WechatTokenManager {
       throw new Error(`WeChat token error: [${data.errcode}] ${data.errmsg}`);
     }
 
-    this.accessToken = data.access_token;
+    const token: string = data.access_token;
+    this.accessToken = token;
     this.expiresAt = Date.now() + (data.expires_in ?? 7200) * 1000;
-    return this.accessToken;
+    return token;
   }
 
   /** Force clear the cached token (e.g., if a call fails with 40001) */
