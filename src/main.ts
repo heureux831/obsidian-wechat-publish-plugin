@@ -89,6 +89,12 @@ export default class MoodCodePlugin extends Plugin {
     this.addSettingTab(new MoodCodeSettingTab(this.app, this));
 
     // Track last active markdown file for when our panel gets focus
+    // Initialize from currently active leaf in case a note was already open
+    const activeLeaf = this.app.workspace.activeLeaf;
+    if (activeLeaf?.view instanceof MarkdownView && activeLeaf.view.file) {
+      this.lastActiveMarkdownFile = activeLeaf.view.file;
+    }
+
     this.registerEvent(
       this.app.workspace.on('active-leaf-change', (leaf) => {
         if (leaf?.view instanceof MarkdownView && leaf.view.file) {
