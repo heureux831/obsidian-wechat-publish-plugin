@@ -42,6 +42,15 @@ export function sanitizeImages(html: string): string {
         return `<img ${newBefore}src="${src}"${after}>`;
       }
 
+      // Handle style attribute that appears after src
+      if (after.includes('style=')) {
+        const newAfter = after.replace(
+          /style="([^"]*)"/,
+          'style="$1;max-width:100%;height:auto"',
+        );
+        return `<img ${before}src="${src}"${newAfter}>`;
+      }
+
       // Add a new style attribute
       return `<img ${before}src="${src}" style="max-width:100%;height:auto"${after}>`;
     },
