@@ -35,10 +35,12 @@
 
 .moodcode-preview-iframe {
   width: 100%;
-  min-height: 300px;
+  flex: 1;
+  min-height: 400px;
   border: 1px solid var(--background-modifier-border);
   border-radius: 4px;
   margin-top: 12px;
+  background: #ffffff;
 }
 
 .moodcode-cover-canvas {
@@ -125,8 +127,10 @@
   display: none;
   flex: 1;
   overflow-y: auto;
+  flex-direction: column;
 }
 
 .moodcode-tab-panel.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
