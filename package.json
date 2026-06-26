@@ -1,0 +1,23 @@
+{
+  "name": "moodcode-blog-publisher",
+  "version": "0.1.0",
+  "description": "Publish Obsidian notes to WeChat Official Account — theme, cover, one-click push",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "lint": "eslint src/"
+  },
+  "keywords": ["obsidian", "plugin", "wechat", "markdown"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "esbuild": "^0.20.0",
+    "obsidian": "^1.7.2",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "juice": "^10.0.0"
+  }
+}

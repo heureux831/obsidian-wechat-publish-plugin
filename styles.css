@@ -1,0 +1,93 @@
+/* MoodCode Blog Publisher — Panel Styles */
+
+.moodcode-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.moodcode-panel h3 {
+  margin: 0 0 8px 0;
+}
+
+.moodcode-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.moodcode-control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.moodcode-control-row label {
+  font-weight: 500;
+  min-width: 60px;
+}
+
+.moodcode-control-row select {
+  flex: 1;
+}
+
+.moodcode-preview-iframe {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.moodcode-cover-canvas {
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.moodcode-push-btn {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #07c160;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.moodcode-push-btn:hover {
+  background-color: #06ad56;
+}
+
+.moodcode-push-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.moodcode-scheme-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.moodcode-scheme-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--background-secondary);
+  font-size: 12px;
+}
+
+.moodcode-scheme-btn.active {
+  border-color: #07c160;
+  background: #e6f9ed;
+}

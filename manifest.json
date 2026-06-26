@@ -1,0 +1,10 @@
+{
+  "id": "moodcode-blog-publisher",
+  "name": "MoodCode Blog Publisher",
+  "version": "0.1.0",
+  "minAppVersion": "1.7.2",
+  "description": "Publish notes to WeChat Official Account — theme styling, cover generation, one-click push to drafts",
+  "author": "MoodCode",
+  "authorUrl": "",
+  "isDesktopOnly": true
+}
