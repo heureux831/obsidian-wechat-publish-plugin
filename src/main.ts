@@ -2,12 +2,15 @@ import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { MoodCodeSettings, DEFAULT_SETTINGS } from './settings';
 import { MoodCodeSettingTab } from './settings';
 import { MainView, VIEW_TYPE_MAIN } from './ui/main-view';
+import { ThemeRegistry } from './theme/theme-registry';
 
 export default class MoodCodePlugin extends Plugin {
   settings!: MoodCodeSettings;
+  themeRegistry!: ThemeRegistry;
 
   async onload() {
     await this.loadSettings();
+    this.themeRegistry = new ThemeRegistry();
 
     // Register main view
     this.registerView(
