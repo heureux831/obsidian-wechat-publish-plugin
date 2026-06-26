@@ -1,0 +1,23 @@
+/* 海·冷蓝 — cool blue tones, for product analysis & business */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #2c3e50;
+  line-height: 1.75;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #2980b9;
+}
+
+#nice blockquote {
+  border-left-color: #3498db;
+  background: #eef7fd;
+  color: #4a6d8c;
+}
+
+#nice strong { color: #2471a3; }
+#nice a { color: #3498db; }
+#nice pre, #nice code { background: #eaf2f8; color: #2c3e50; }
+#nice pre code { color: #2c3e50; }
+#nice th { background: #e8f0f8; }
+#nice hr { border-top-color: #bdd7ee; }

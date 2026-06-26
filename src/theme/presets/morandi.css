@@ -1,0 +1,22 @@
+/* 墨·学术 — muted morandi tones, ideal for in-depth long reads */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "STSong", "SimSun", serif;
+  color: #4a4a4a;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #6b5b4c;
+}
+
+#nice blockquote {
+  border-left-color: #b8a99a;
+  background: #f7f3ef;
+  color: #6b5b4c;
+}
+
+#nice strong { color: #5c4b3a; }
+#nice a { color: #9b8c7c; }
+#nice pre, #nice code { background: #f2ede8; color: #5c4b3a; }
+#nice pre code { color: #5c4b3a; }
+#nice th { background: #f0ebe4; }
+#nice hr { border-top-color: #d4c8bb; }

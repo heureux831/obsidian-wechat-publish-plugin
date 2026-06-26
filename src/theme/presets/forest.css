@@ -1,0 +1,23 @@
+/* 森·墨绿 — fresh forest green, for book notes & nature writing */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", serif;
+  color: #3a4a3a;
+  line-height: 1.85;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #2d6a4f;
+}
+
+#nice blockquote {
+  border-left-color: #52b788;
+  background: #f0f7f2;
+  color: #4a6a4a;
+}
+
+#nice strong { color: #1b5e20; }
+#nice a { color: #40916c; }
+#nice pre, #nice code { background: #eaf5ea; color: #2d4a2d; }
+#nice pre code { color: #2d4a2d; }
+#nice th { background: #e6f2e6; }
+#nice hr { border-top-color: #b7d7b7; }

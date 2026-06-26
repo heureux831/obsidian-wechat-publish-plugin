@@ -1,0 +1,27 @@
+/* 夜·深色 — dark mode, for night-time reading comfort */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #e8e8e8;
+}
+
+#nice p { color: #c8c8c8; }
+
+#nice blockquote {
+  border-left-color: #555;
+  background: #2a2a2a;
+  color: #aaa;
+}
+
+#nice strong { color: #fff; }
+#nice a { color: #6ca6d6; }
+#nice pre, #nice code { background: #2d2d2d; color: #ccc; }
+#nice pre code { color: #ccc; }
+#nice th { background: #2a2a2a; color: #e0e0e0; border-color: #444; }
+#nice td { border-color: #444; }
+#nice hr { border-top-color: #444; }
+#nice img { filter: brightness(0.9); }

@@ -1,0 +1,27 @@
+/* 简·黑白 — crisp black & white, great for technical content */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1a1a1a;
+  font-size: 15px;
+  line-height: 1.8;
+  letter-spacing: 0.8px;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#nice blockquote {
+  border-left: 3px solid #000;
+  background: #fafafa;
+  color: #555;
+}
+
+#nice strong { color: #000; }
+#nice a { color: #333; border-bottom: 1px solid #999; }
+#nice pre, #nice code { background: #f7f7f7; color: #1a1a1a; }
+#nice pre code { color: #1a1a1a; }
+#nice th { background: #f5f5f5; color: #000; }
+#nice hr { border-top: 2px solid #000; }

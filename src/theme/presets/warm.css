@@ -1,0 +1,23 @@
+/* 晨·暖橙 — warm orange tones, for lifestyle & personal essays */
+#nice {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "KaiTi", sans-serif;
+  color: #5a4030;
+  line-height: 1.85;
+}
+
+#nice h1, #nice h2, #nice h3, #nice h4, #nice h5, #nice h6 {
+  color: #d4703a;
+}
+
+#nice blockquote {
+  border-left-color: #f0a060;
+  background: #fef7f0;
+  color: #805840;
+}
+
+#nice strong { color: #c06030; }
+#nice a { color: #e08050; }
+#nice pre, #nice code { background: #fdf3e8; color: #8b5e3c; }
+#nice pre code { color: #8b5e3c; }
+#nice th { background: #fef0e0; }
+#nice hr { border-top-color: #f0d0b0; }
