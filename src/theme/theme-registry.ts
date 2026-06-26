@@ -55,8 +55,8 @@ export class ThemeRegistry {
     return this.presets.get(id) ?? '';
   }
 
-  /** Save user-edited custom CSS */
-  saveCustomCSS(css: string): void {
+  /** Save user-edited custom theme */
+  saveCustomTheme(css: string): void {
     this.customCSS = css;
   }
 
