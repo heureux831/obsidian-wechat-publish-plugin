@@ -161,10 +161,15 @@ export class MainView extends ItemView {
 
     try {
       const html = await renderWechatHTML(this.app, content, themeCSS);
-      await navigator.clipboard.writeText(html);
-      new Notice('HTML copied to clipboard');
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([html], { type: 'text/plain' }),
+        }),
+      ]);
+      new Notice('✅ HTML 已复制（可直接粘贴到微信编辑器）');
     } catch (err) {
-      new Notice(`Copy failed: ${err}`);
+      new Notice(`❌ 复制失败: ${err}`);
       console.error('Copy HTML error:', err);
     }
   }
