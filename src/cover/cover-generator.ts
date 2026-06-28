@@ -4,7 +4,6 @@ const CANVAS_WIDTH = 900;
 const CANVAS_HEIGHT = 500;
 const EXPORT_WIDTH = 900;
 const EXPORT_HEIGHT = 383;
-// The export crops from the top — canvas renders full 500px, export takes top 383
 
 export function renderCoverToCanvas(
   canvas: HTMLCanvasElement,
@@ -17,7 +16,7 @@ export function renderCoverToCanvas(
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  // Layer 1: Background
+  // ── Layer 1: Background ──
   if (scheme.gradient) {
     const rad = (scheme.gradient.angle * Math.PI) / 180;
     const dirX = Math.cos(rad);
@@ -27,10 +26,8 @@ export function renderCoverToCanvas(
     const cx = CANVAS_WIDTH / 2;
     const cy = CANVAS_HEIGHT / 2;
     const grad = ctx.createLinearGradient(
-      cx - dirX * half,
-      cy - dirY * half,
-      cx + dirX * half,
-      cy + dirY * half,
+      cx - dirX * half, cy - dirY * half,
+      cx + dirX * half, cy + dirY * half,
     );
     grad.addColorStop(0, scheme.gradient.start);
     grad.addColorStop(1, scheme.gradient.end);
@@ -40,12 +37,10 @@ export function renderCoverToCanvas(
   }
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-  // Layer 2: Decorations
+  // ── Layer 2: Decorations ──
   for (const deco of scheme.decorations) {
     ctx.save();
     ctx.globalAlpha = deco.opacity ?? 1;
-    ctx.fillStyle = deco.color;
-    ctx.strokeStyle = deco.color;
 
     const x = (deco.x / 100) * CANVAS_WIDTH;
     const y = (deco.y / 100) * CANVAS_HEIGHT;
@@ -54,6 +49,7 @@ export function renderCoverToCanvas(
       case 'rect': {
         const w = ((deco.width ?? 10) / 100) * CANVAS_WIDTH;
         const h = ((deco.height ?? 4) / 100) * CANVAS_HEIGHT;
+        ctx.fillStyle = deco.color;
         if (deco.rotation) {
           ctx.translate(x + w / 2, y + h / 2);
           ctx.rotate((deco.rotation * Math.PI) / 180);
@@ -63,16 +59,29 @@ export function renderCoverToCanvas(
         }
         break;
       }
+
       case 'circle': {
         const r = ((deco.radius ?? 10) / 100) * CANVAS_WIDTH;
+        ctx.fillStyle = deco.color;
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2);
         ctx.fill();
         break;
       }
+
+      case 'large-circle': {
+        const r = ((deco.radius ?? 30) / 100) * CANVAS_WIDTH;
+        ctx.fillStyle = deco.color;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      }
+
       case 'line': {
         const w = ((deco.width ?? 20) / 100) * CANVAS_WIDTH;
         ctx.lineWidth = deco.height ?? 2;
+        ctx.strokeStyle = deco.color;
         if (deco.rotation) {
           ctx.translate(x, y);
           ctx.rotate((deco.rotation * Math.PI) / 180);
@@ -88,16 +97,57 @@ export function renderCoverToCanvas(
         }
         break;
       }
-      case 'gradient-overlay': {
-        // Not currently used in presets but available for custom
+
+      case 'accent-bar': {
+        // A full-width or partial-width colored bar — clean, bold
+        const w = ((deco.width ?? 100) / 100) * CANVAS_WIDTH;
+        const h = ((deco.height ?? 4) / 100) * CANVAS_HEIGHT;
+        ctx.fillStyle = deco.color;
+        if (deco.rotation) {
+          ctx.translate(x + w / 2, y + h / 2);
+          ctx.rotate((deco.rotation * Math.PI) / 180);
+          ctx.fillRect(-w / 2, -h / 2, w, h);
+        } else {
+          ctx.fillRect(x, y, w, h);
+        }
+        break;
+      }
+
+      case 'dot-grid': {
+        // A grid of small dots — editorial texture
+        const gw = ((deco.width ?? 20) / 100) * CANVAS_WIDTH;
+        const gh = ((deco.height ?? 10) / 100) * CANVAS_HEIGHT;
+        const spacing = 30;
+        const dotRadius = 1.5;
+        ctx.fillStyle = deco.color;
+        const cols = Math.floor(gw / spacing);
+        const rows = Math.floor(gh / spacing);
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            ctx.beginPath();
+            ctx.arc(x + c * spacing, y + r * spacing, dotRadius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
         break;
       }
     }
+
     ctx.restore();
   }
 
-  // Layer 3: Title
+  // ── Layer 3: Title ──
   ctx.fillStyle = scheme.textColor;
+  if (scheme.textShadow) {
+    ctx.shadowColor = scheme.textShadow.split(' ').slice(-2)[0] || 'rgba(0,0,0,0.3)';
+    // Parse the text shadow roughly for blur + offset
+    const parts = scheme.textShadow.split(' ');
+    if (parts.length >= 3) {
+      ctx.shadowOffsetX = parseInt(parts[0]) || 0;
+      ctx.shadowOffsetY = parseInt(parts[1]) || 1;
+      ctx.shadowBlur = parseInt(parts[2]) || 2;
+    }
+  }
   ctx.font = `700 ${scheme.titleFontSize}px ${scheme.fontFamily}`;
   ctx.textAlign = scheme.titleAlign;
   ctx.textBaseline = 'middle';
@@ -108,18 +158,23 @@ export function renderCoverToCanvas(
 
   wrapText(ctx, title, titleX, titleY, maxWidth, scheme.titleFontSize * 1.4);
 
-  // Layer 4: Subtitle (optional)
+  // ── Layer 4: Subtitle ──
+  ctx.shadowColor = 'transparent';
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+  ctx.shadowBlur = 0;
+
   if (scheme.showSubtitle && subtitle) {
     ctx.fillStyle = scheme.subtitleColor;
-    ctx.font = `400 ${Math.round(scheme.titleFontSize * 0.45)}px ${scheme.fontFamily}`;
+    ctx.font = `400 ${Math.round(scheme.titleFontSize * 0.42)}px ${scheme.fontFamily}`;
 
     const subY = titleY + scheme.titleFontSize * 1.0 + 20;
-    wrapText(ctx, subtitle, titleX, subY, maxWidth, scheme.titleFontSize * 0.7);
+    wrapText(ctx, subtitle, titleX, subY, maxWidth, scheme.titleFontSize * 0.65);
   }
 }
 
 /**
- * Word-wrap helper — draws text with line breaks at word boundaries.
+ * Character-level word wrapping for CJK text.
  */
 function wrapText(
   ctx: CanvasRenderingContext2D,
@@ -129,40 +184,35 @@ function wrapText(
   maxWidth: number,
   lineHeight: number,
 ): void {
-  const words = text.split('');
+  const chars = text.split('');
   let line = '';
   let currentY = y;
 
-  for (let i = 0; i < words.length; i++) {
-    const testLine = line + words[i];
+  for (let i = 0; i < chars.length; i++) {
+    const testLine = line + chars[i];
     const metrics = ctx.measureText(testLine);
 
     if (metrics.width > maxWidth && line.length > 0) {
-      const drawX = x;
-      ctx.fillText(line.trim(), drawX, currentY);
-      line = words[i];
+      ctx.fillText(line.trim(), x, currentY);
+      line = chars[i];
       currentY += lineHeight;
     } else {
       line = testLine;
     }
   }
-  const drawX = x;
-  ctx.fillText(line.trim(), drawX, currentY);
+  ctx.fillText(line.trim(), x, currentY);
 }
 
-/**
- * Generate cover as both dataURL and Blob (for different use cases).
- */
+// ── Export ──
+
 export function generateCover(
   scheme: CoverScheme,
   title: string,
   subtitle: string,
 ): { dataURL: string; blob: Blob } {
-  // Render at full resolution
   const canvas = document.createElement('canvas');
   renderCoverToCanvas(canvas, scheme, title, subtitle);
 
-  // Crop to export size (900x383 — top portion)
   const exportCanvas = document.createElement('canvas');
   exportCanvas.width = EXPORT_WIDTH;
   exportCanvas.height = EXPORT_HEIGHT;
@@ -170,9 +220,6 @@ export function generateCover(
   exportCtx.drawImage(canvas, 0, 0, EXPORT_WIDTH, EXPORT_HEIGHT, 0, 0, EXPORT_WIDTH, EXPORT_HEIGHT);
 
   const dataURL = exportCanvas.toDataURL('image/png');
-  // Also get blob (for file save and WeChat upload)
-  // We'll convert dataURL to blob as needed
-
   return { dataURL, blob: dataURLtoBlob(dataURL) };
 }
 
@@ -188,9 +235,6 @@ function dataURLtoBlob(dataURL: string): Blob {
   return new Blob([buffer], { type: mime });
 }
 
-/**
- * Get dataURL from a Blob (for preview / clipboard).
- */
 export function blobToDataURL(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
