@@ -63,13 +63,13 @@ export class ThemeRegistry {
   /** Get display name for a preset ID */
   private getDisplayName(id: string): string {
     const names: Record<string, string> = {
-      'basic': '基础 (Basic)',
-      'morandi': '墨 · 学术 (Morandi)',
-      'minimal': '简 · 黑白 (Minimal)',
-      'warm': '晨 · 暖橙 (Warm)',
-      'cool': '海 · 冷蓝 (Cool)',
-      'forest': '森 · 墨绿 (Forest)',
-      'dark': '夜 · 深色 (Dark)',
+      'basic': '基础',
+      'morandi': '素笺',
+      'minimal': '白描',
+      'warm': '柿染',
+      'cool': '青瓷',
+      'forest': '苔色',
+      'dark': '墨韵',
     };
     return names[id] ?? id;
   }

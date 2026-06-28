@@ -1,13 +1,13 @@
 export interface DecorationConfig {
   type: 'rect' | 'circle' | 'line' | 'accent-bar' | 'large-circle' | 'dot-grid';
-  x: number;        // percentage 0-100
+  x: number;
   y: number;
-  width?: number;   // percentage 0-100
+  width?: number;
   height?: number;
   color: string;
-  opacity?: number;  // 0-1
-  radius?: number;   // for circles / rect corners
-  rotation?: number; // degrees
+  opacity?: number;
+  radius?: number;
+  rotation?: number;
 }
 
 export interface CoverScheme {
@@ -22,50 +22,42 @@ export interface CoverScheme {
   titleFontSize: number;
   titleAlign: 'center' | 'left';
   showSubtitle: boolean;
-  /** Subtle text shadow for readability on gradients */
   textShadow?: string;
 }
 
 export const COVER_SCHEMES: CoverScheme[] = [
-  // ── 1. 墨 · 学术 ──
+  // ── 1. 素笺 · Plain Letter ──
   {
-    id: 'morandi',
-    name: '墨 · 学术',
-    backgroundColor: '#e8ddd0',
-    gradient: { start: '#ede3d8', end: '#e0d2c0', angle: 160 },
-    textColor: '#4a3728',
-    subtitleColor: '#8b7355',
+    id: 'sujian',
+    name: '素笺',
+    backgroundColor: '#f5f0e8',
+    gradient: { start: '#f8f4ed', end: '#f0e8d8', angle: 170 },
+    textColor: '#4a3f35',
+    subtitleColor: '#8b7d6b',
     decorations: [
-      // Large soft circle — focal anchor behind title area
-      { type: 'large-circle', x: 50, y: 42, radius: 32, color: '#d4c4b0', opacity: 0.35 },
-      // Smaller accent circle — balance
-      { type: 'circle', x: 82, y: 22, radius: 6, color: '#c4b09a', opacity: 0.45 },
-      // Bottom accent bar — grounds the composition
-      { type: 'accent-bar', x: 15, y: 88, width: 70, height: 2, color: '#bfa58a', opacity: 0.6 },
-      // Dot grid texture — editorial feel
-      { type: 'dot-grid', x: 60, y: 8, width: 25, height: 12, color: '#c4b09a', opacity: 0.18 },
+      { type: 'large-circle', x: 50, y: 45, radius: 34, color: '#e8dcc8', opacity: 0.3 },
+      { type: 'circle', x: 85, y: 18, radius: 5, color: '#d4c8b0', opacity: 0.45 },
+      { type: 'accent-bar', x: 12, y: 88, width: 50, height: 2, color: '#c8b898', opacity: 0.5 },
+      { type: 'dot-grid', x: 55, y: 10, width: 30, height: 14, color: '#d8ccb8', opacity: 0.15 },
     ],
     fontFamily: '"Noto Serif SC", "STSong", "SimSun", serif',
     titleFontSize: 44,
     titleAlign: 'center',
     showSubtitle: true,
-    textShadow: '0 1px 2px rgba(255,255,240,0.3)',
+    textShadow: '0 1px 2px rgba(255,252,245,0.4)',
   },
 
-  // ── 2. 简 · 黑白 ──
+  // ── 2. 白描 · Ink Outline ──
   {
-    id: 'minimal',
-    name: '简 · 黑白',
-    backgroundColor: '#fafaf8',
+    id: 'baimiao',
+    name: '白描',
+    backgroundColor: '#fdfdfc',
     textColor: '#1a1a1a',
-    subtitleColor: '#777777',
+    subtitleColor: '#888888',
     decorations: [
-      // Bold left accent — Swiss design
-      { type: 'accent-bar', x: 0, y: 0, width: 5, height: 100, color: '#1a1a1a', opacity: 1 },
-      // Thin rule at bottom
-      { type: 'line', x: 8, y: 92, width: 84, height: 1, color: '#d0d0d0', opacity: 1 },
-      // Small square accent near title
-      { type: 'rect', x: 8, y: 38, width: 3, height: 3, color: '#1a1a1a', opacity: 1, rotation: 0 },
+      { type: 'accent-bar', x: 0, y: 0, width: 4, height: 100, color: '#1a1a1a', opacity: 1 },
+      { type: 'line', x: 8, y: 93, width: 75, height: 1, color: '#cccccc', opacity: 1 },
+      { type: 'circle', x: 6, y: 85, radius: 2, color: '#1a1a1a', opacity: 0.7 },
     ],
     fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif',
     titleFontSize: 42,
@@ -73,22 +65,20 @@ export const COVER_SCHEMES: CoverScheme[] = [
     showSubtitle: true,
   },
 
-  // ── 3. 晨 · 暖橙 ──
+  // ── 3. 柿染 · Persimmon Dye ──
   {
-    id: 'warm',
-    name: '晨 · 暖橙',
-    backgroundColor: '#fdf2e4',
-    gradient: { start: '#fef7f0', end: '#fbe4cc', angle: 145 },
-    textColor: '#b8512a',
-    subtitleColor: '#d4855c',
+    id: 'shiran',
+    name: '柿染',
+    backgroundColor: '#fdf2e8',
+    gradient: { start: '#fef8f2', end: '#fbe8d4', angle: 140 },
+    textColor: '#8b3a20',
+    subtitleColor: '#c07850',
     decorations: [
-      // Warm glow circles — layered depth
-      { type: 'large-circle', x: 78, y: 15, radius: 28, color: '#f5c8a0', opacity: 0.35 },
-      { type: 'large-circle', x: 15, y: 75, radius: 20, color: '#f0c090', opacity: 0.25 },
-      { type: 'circle', x: 25, y: 20, radius: 10, color: '#f8d4b8', opacity: 0.4 },
-      { type: 'circle', x: 68, y: 82, radius: 5, color: '#e8a870', opacity: 0.3 },
-      // Warm accent line
-      { type: 'accent-bar', x: 35, y: 90, width: 30, height: 2, color: '#e89868', opacity: 0.5 },
+      { type: 'large-circle', x: 75, y: 18, radius: 30, color: '#f0c8a0', opacity: 0.32 },
+      { type: 'large-circle', x: 12, y: 72, radius: 22, color: '#e8b888', opacity: 0.22 },
+      { type: 'circle', x: 22, y: 22, radius: 8, color: '#f5d0b0', opacity: 0.38 },
+      { type: 'circle', x: 65, y: 78, radius: 6, color: '#e0a070', opacity: 0.28 },
+      { type: 'accent-bar', x: 30, y: 90, width: 35, height: 2, color: '#d89860', opacity: 0.5 },
     ],
     fontFamily: '"PingFang SC", "STKaiti", "KaiTi", serif',
     titleFontSize: 46,
@@ -96,22 +86,19 @@ export const COVER_SCHEMES: CoverScheme[] = [
     showSubtitle: true,
   },
 
-  // ── 4. 海 · 冷蓝 ──
+  // ── 4. 青瓷 · Celadon ──
   {
-    id: 'cool',
-    name: '海 · 冷蓝',
-    backgroundColor: '#e6f1fa',
-    gradient: { start: '#edf4fc', end: '#dce8f5', angle: 180 },
-    textColor: '#1a3a5c',
-    subtitleColor: '#5b7fa5',
+    id: 'qingci',
+    name: '青瓷',
+    backgroundColor: '#eaf3f0',
+    gradient: { start: '#f0f6f4', end: '#e0ece6', angle: 175 },
+    textColor: '#2d4a42',
+    subtitleColor: '#5a8a7a',
     decorations: [
-      // Horizontal accent strip
-      { type: 'accent-bar', x: 0, y: 0, width: 100, height: 4, color: '#3a7bd5', opacity: 0.8 },
-      // Geometric rectangles — tech/analytics feel
-      { type: 'rect', x: 80, y: 88, width: 16, height: 8, color: '#3a7bd5', opacity: 0.12, rotation: -12 },
-      { type: 'rect', x: 72, y: 82, width: 12, height: 6, color: '#2b5fa8', opacity: 0.15, rotation: -8 },
-      // Subtle dot grid
-      { type: 'dot-grid', x: 55, y: 70, width: 30, height: 12, color: '#3a7bd5', opacity: 0.1 },
+      { type: 'accent-bar', x: 0, y: 0, width: 100, height: 4, color: '#5a9e8a', opacity: 0.7 },
+      { type: 'large-circle', x: 85, y: 75, radius: 25, color: '#a0d4c4', opacity: 0.22 },
+      { type: 'rect', x: 75, y: 88, width: 18, height: 7, color: '#5a9e8a', opacity: 0.1, rotation: -10 },
+      { type: 'dot-grid', x: 50, y: 68, width: 28, height: 14, color: '#7aba9e', opacity: 0.1 },
     ],
     fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif',
     titleFontSize: 42,
@@ -119,22 +106,20 @@ export const COVER_SCHEMES: CoverScheme[] = [
     showSubtitle: true,
   },
 
-  // ── 5. 森 · 墨绿 ──
+  // ── 5. 苔色 · Moss ──
   {
-    id: 'forest',
-    name: '森 · 墨绿',
-    backgroundColor: '#e8f0e8',
-    gradient: { start: '#edf4ed', end: '#dce8dc', angle: 155 },
-    textColor: '#2d4a2d',
-    subtitleColor: '#5a7a5a',
+    id: 'taise',
+    name: '苔色',
+    backgroundColor: '#eaf0e8',
+    gradient: { start: '#eef4ec', end: '#dde8d8', angle: 150 },
+    textColor: '#3a4a38',
+    subtitleColor: '#6a7a68',
     decorations: [
-      // Organic overlapping circles
-      { type: 'large-circle', x: 18, y: 22, radius: 18, color: '#a8d5a8', opacity: 0.28 },
-      { type: 'large-circle', x: 70, y: 65, radius: 22, color: '#8cc48c', opacity: 0.22 },
-      { type: 'circle', x: 55, y: 18, radius: 8, color: '#95c895', opacity: 0.3 },
-      { type: 'circle', x: 85, y: 85, radius: 5, color: '#7ab87a', opacity: 0.25 },
-      // Ground line
-      { type: 'accent-bar', x: 10, y: 90, width: 60, height: 2, color: '#6aaa6a', opacity: 0.45 },
+      { type: 'large-circle', x: 20, y: 25, radius: 20, color: '#a8c8a0', opacity: 0.26 },
+      { type: 'large-circle', x: 72, y: 68, radius: 24, color: '#90b888', opacity: 0.2 },
+      { type: 'circle', x: 52, y: 18, radius: 9, color: '#a0c898', opacity: 0.28 },
+      { type: 'circle', x: 88, y: 82, radius: 4, color: '#78a870', opacity: 0.24 },
+      { type: 'accent-bar', x: 10, y: 90, width: 55, height: 2, color: '#6a9a60', opacity: 0.42 },
     ],
     fontFamily: '"Noto Serif SC", "PingFang SC", "STSong", serif',
     titleFontSize: 44,
@@ -142,25 +127,21 @@ export const COVER_SCHEMES: CoverScheme[] = [
     showSubtitle: true,
   },
 
-  // ── 6. 夜 · 深色 ──
+  // ── 6. 墨韵 · Ink Wash ──
   {
-    id: 'dark',
-    name: '夜 · 深色',
-    backgroundColor: '#1a1a2e',
-    gradient: { start: '#1a1a2e', end: '#162032', angle: 135 },
-    textColor: '#f0e6d3',
+    id: 'moyun',
+    name: '墨韵',
+    backgroundColor: '#1c1c24',
+    gradient: { start: '#22222c', end: '#181820', angle: 130 },
+    textColor: '#e8e0d0',
     subtitleColor: '#a09888',
     decorations: [
-      // Dramatic large circle — moon-like focal point
-      { type: 'large-circle', x: 80, y: 22, radius: 36, color: '#e8c56d', opacity: 0.08 },
-      // Accent line — the one bold element
-      { type: 'accent-bar', x: 12, y: 15, width: 30, height: 2, color: '#e8c56d', opacity: 0.7 },
-      // Subtle geometric accents
-      { type: 'circle', x: 18, y: 78, radius: 3, color: '#e8c56d', opacity: 0.25 },
-      { type: 'circle', x: 45, y: 72, radius: 2, color: '#e8c56d', opacity: 0.2 },
-      { type: 'circle', x: 38, y: 82, radius: 4, color: '#e8c56d', opacity: 0.18 },
-      // Dot grid for texture
-      { type: 'dot-grid', x: 60, y: 73, width: 30, height: 15, color: '#c0b090', opacity: 0.08 },
+      { type: 'large-circle', x: 78, y: 24, radius: 38, color: '#d4c090', opacity: 0.07 },
+      { type: 'accent-bar', x: 10, y: 14, width: 28, height: 2, color: '#d4c090', opacity: 0.6 },
+      { type: 'circle', x: 15, y: 76, radius: 3, color: '#d4c090', opacity: 0.22 },
+      { type: 'circle', x: 42, y: 70, radius: 2, color: '#d4c090', opacity: 0.18 },
+      { type: 'circle', x: 35, y: 80, radius: 4, color: '#d4c090', opacity: 0.15 },
+      { type: 'dot-grid', x: 58, y: 72, width: 32, height: 16, color: '#c0b898', opacity: 0.07 },
     ],
     fontFamily: '"PingFang SC", "Noto Serif SC", "STKaiti", serif',
     titleFontSize: 44,
