@@ -36,7 +36,7 @@ export class MainView extends ItemView {
   }
 
   getViewType(): string { return VIEW_TYPE_MAIN; }
-  getDisplayText(): string { return 'MoodCode Publisher'; }
+  getDisplayText(): string { return '微信发布'; }
   getIcon(): string { return 'send'; }
 
   async onOpen() {
@@ -44,12 +44,12 @@ export class MainView extends ItemView {
     container.empty();
     container.addClass('moodcode-panel');
 
-    container.createEl('h3', { text: 'MoodCode Publisher' });
+    container.createDiv('moodcode-panel-header').createEl('span', { text: '微信发布' });
 
     // === Tab bar ===
     const tabBar = container.createDiv('moodcode-tab-bar');
-    this.tabThemeBtn = tabBar.createEl('button', { text: '📝 排版', cls: 'moodcode-tab active' });
-    this.tabCoverBtn = tabBar.createEl('button', { text: '🎨 封面', cls: 'moodcode-tab' });
+    this.tabThemeBtn = tabBar.createEl('button', { text: '排版', cls: 'moodcode-tab active' });
+    this.tabCoverBtn = tabBar.createEl('button', { text: '封面', cls: 'moodcode-tab' });
 
     this.tabThemeBtn.addEventListener('click', () => this.switchTab('theme'));
     this.tabCoverBtn.addEventListener('click', () => this.switchTab('cover'));
@@ -64,9 +64,11 @@ export class MainView extends ItemView {
     // --- Build Cover tab ---
     this.buildCoverTab(this.panelCover);
 
-    // --- Push button (always visible, below tabs) ---
-    const pushBtn = container.createEl('button', {
-      text: '🚀 推送到微信草稿箱',
+    // --- Push section (always visible, below tabs) ---
+    const pushSection = container.createDiv('moodcode-push-section');
+    pushSection.createEl('p', { text: '确认排版和封面后推送到微信草稿箱', cls: 'moodcode-push-hint' });
+    const pushBtn = pushSection.createEl('button', {
+      text: '推送到微信草稿箱',
       cls: 'moodcode-push-btn',
     });
     pushBtn.addEventListener('click', () => this.handlePush());
@@ -194,7 +196,7 @@ export class MainView extends ItemView {
     this.subtitleInput.addEventListener('input', () => { this.refreshCanvas(); this.generateCoverDataURL(); });
 
     // Scheme picker
-    controls.createEl('p', { text: '配色方案' });
+    controls.createEl('p', { text: '配色方案', cls: 'moodcode-section-label' });
     const schemeGrid = controls.createDiv('moodcode-scheme-grid');
     for (const scheme of COVER_SCHEMES) {
       const btn = schemeGrid.createEl('button', {
