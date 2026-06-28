@@ -67,7 +67,7 @@ export function wrapInNiceContainer(bodyHtml: string, themeCSS: string): string 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>${themeCSS}</style>
+<style>html,body{background:#fff;}${themeCSS}</style>
 </head>
 <body>
 <div id="nice">${bodyHtml}</div>

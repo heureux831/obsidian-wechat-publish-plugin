@@ -182,7 +182,7 @@
   border: 1px solid var(--background-modifier-border);
   border-radius: 6px;
   margin-top: 14px;
-  background: var(--background-primary);
+  background: #ffffff;
 }
 
 /* ── Cover canvas ── */
